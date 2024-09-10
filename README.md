@@ -36,6 +36,10 @@ Before you begin, ensure you have met the following requirements:
   2. Download the latest version for your operating system
   3. Run the installer and follow the installation wizard
   4. Make sure to check the box that says "Add Python to PATH" during installation
+ 
+```
+  MacOS : $ brew install python
+```
 
 - **pip**: pip is the package installer for Python. It usually comes pre-installed with Python. To check if you have pip installed:
 
@@ -49,37 +53,53 @@ Before you begin, ensure you have met the following requirements:
 
 1. Clone this repository:
    ```
-   git clone https://github.com/your-username/celigo-automation.git
+   $git clone https://github.com/lnvestor/Autonomos.git
    ```
 
 2. Navigate to the project directory:
    ```
-   cd celigo-automation
+   $cd Autonomos
    ```
 
-3. Install the required dependencies:
+4. Create Virtual Environment:
    ```
-   pip install -r requirements.txt
+   $python3 -m venv .venv
+   ```
+
+5. Activate the Virtual Environment:
+   ```
+   $Source venv/bin/activate
+   ```
+   
+
+6. Install the required dependencies:
+   ```
+   $pip install -r requirements.txt
    ```
 
    If you encounter any issues, try using `pip3` instead of `pip`:
    ```
-   pip3 install -r requirements.txt
+   $pip3 install -r requirements.txt
    ```
 
-4. Set up environment variables:
-   - Create a `.env` file in the project root directory
-   - Add your Cohere API key:
-     ```
-     COHERE_API_KEY=your_api_key_here
-     ```
-
+   
+7. Add API Key for CoHere AI (**Required**)
+   
+    - Visit CoHere : [CoHere AI](https://cohere.com/)
+    - How to Get API Key : [Loom Video : Get API key From CoHere]((https://www.loom.com/share/1517e3f315d140d09af560d9dbced4ab))
+   
+   ```
+   
+   $export COHERE_API_KEY="YOUR-API-KEY" 
+   
+   ```
+   
 ## 🚀 Usage
 
 Run the main script:
 
 ```
-python AppV7.4.py
+python Autonomos.py OR python3 Autonomos.py
 ```
 
 If you're using Python 3 specifically, you might need to use:
@@ -108,14 +128,14 @@ Follow the on-screen prompts to:
 ```
 celigo-automation/
 │
-├── AppV7.4.py            # Main application script
+├── Autonomos.py          # Main application script
 ├── AiProcessing.py       # AI processing module
 ├── requirements.txt      # Project dependencies
 ├── README.md             # Project documentation
 │
 └── CeligoAI/
-    ├── DocumentResources/  # Generated resources
-    └── extracted/          # Extracted integration data
+    ├── DocumentResources/  # Generated resources including the O&M
+    └── extracted/          # Extracted integration data Automatically
 ```
 
 ## 🤝 Contributing
@@ -139,8 +159,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## 👤 Author
 
 **Your Name**
-- Github: [@your-github-username](https://github.com/your-github-username)
-- LinkedIn: [@your-linkedin](https://linkedin.com/in/your-linkedin)
+- Github: [@Investor](https://github.com/Investor)
+- LinkedIn: [@Idrisstalainte](https://linkedin.com/in/driss-talainte)
 
 ---
 
