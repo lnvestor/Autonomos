@@ -1,6 +1,11 @@
 # 🚀 Celigo Automation Tool
 
-![Celigo Automation](https://placeholder-image-url.com/celigo-automation.png)
+
+
+
+![Screenshot 2024-09-10 at 5 31 17 PM](https://github.com/user-attachments/assets/29ec68ff-7231-4924-8c07-b0d884852776)
+
+
 
 ## 📚 Table of Contents
 - [Overview](#-overview)
