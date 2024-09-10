@@ -1,8 +1,3 @@
-# Autonomos
-
-![Screenshot 2024-09-10 at 5 31 17 PM](https://github.com/user-attachments/assets/91233f32-5e77-4f3a-80c9-09fc15f2c728)
-
-
 # 🚀 Celigo Automation Tool
 
 ![Celigo Automation](https://placeholder-image-url.com/celigo-automation.png)
@@ -144,8 +139,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## 👤 Author
 
 **Your Name**
-- Github: [@Investor](https://github.com/investor)
-- LinkedIn: [@IDriss Talainte](https://www.linkedin.com/in/driss-talainte/)
+- Github: [@your-github-username](https://github.com/your-github-username)
+- LinkedIn: [@your-linkedin](https://linkedin.com/in/your-linkedin)
 
 ---
 
