@@ -108,6 +108,16 @@ If you're using Python 3 specifically, you might need to use:
 python3 AppV7.4.py
 ```
 
+
+## 📁 Installation (Video)
+
+  Quick Video how to install Autonomos
+
+```
+python3 AppV7.4.py
+```
+
+
 Follow the on-screen prompts to:
 1. Log in to your Celigo account
 2. Select a project and environment
@@ -122,6 +132,9 @@ Follow the on-screen prompts to:
 5. 📄 Generate O&M
 6. 🧹 Clean All Generated Files
 7. 🚪 Exit
+
+
+
 
 ## 📁 Project Structure
 
@@ -159,7 +172,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## 👤 Author
 
 **Your Name**
-- Github: [@Investor](https://github.com/Investor)
+- Github: [@Investor](https://github.com/lnvestor)
 - LinkedIn: [@Idrisstalainte](https://linkedin.com/in/driss-talainte)
 
 ---
