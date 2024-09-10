@@ -6,7 +6,6 @@ import getpass
 import logging
 import subprocess
 import platform
-
 import pickle
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor, Cm
@@ -34,8 +33,6 @@ from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
 from PIL import Image
 from AiProcessing import AiProcessing
-
-
 
 init(autoreset=True)
 
@@ -71,7 +68,7 @@ def resize_terminal(rows: int = 39, columns: int = 157):
     current_os = platform.system()
 
     try:
-        if current_os == "Darwin":  # macOS
+        if current_os == "Darwin":  
             applescript = f'''
             tell application "Terminal"
                 set current settings of selected tab of front window to settings set "Basic"
@@ -89,7 +86,7 @@ def resize_terminal(rows: int = 39, columns: int = 157):
             return
 
         logging.info(f"Terminal resized to {rows} rows and {columns} columns on {current_os}")
-        time.sleep(1)  # Wait for 1 second to ensure the resize has taken effect
+        time.sleep(1)  
 
     except subprocess.CalledProcessError as e:
         logging.error(f"Failed to resize terminal on {current_os}: {e.stderr}")
@@ -131,20 +128,15 @@ class CeligoAutomation:
                 EC.presence_of_element_located((By.CLASS_NAME, "react-flow__pane"))
             )
 
-            # Wait for 7 seconds to allow the flow to fully render
             time.sleep(13)
 
-            # Find and click the zoom fit button using aria-label
             zoom_fit_button = self.driver.find_element(By.XPATH, "//button[./span[@aria-label='Zoom to fit']]")
             ActionChains(self.driver).move_to_element(zoom_fit_button).click().perform()
 
-            # Wait a bit for the zoom animation to complete
             time.sleep(3)
 
-            # Capture the screenshot of the react-flow__pane element
             screenshot = pane_element.screenshot_as_png
             
-            # Save the screenshot
             filename = f"{flow_id}_flow.png"
             filepath = os.path.join(self.output_directory, filename)
             with open(filepath, "wb") as file:
@@ -201,20 +193,16 @@ class CeligoAutomation:
                         
                         if script_ids:
                             for script_id in script_ids:
-                                # Find the corresponding script file
                                 script_files = [f for f in os.listdir(scripts_dir) if f.endswith(get_short_id(script_id) + '.js')]
                                 if script_files:
                                     script_file = script_files[0]
                                     script_path = os.path.join(scripts_dir, script_file)
                                     
-                                    # Get the import/export ID
                                     item_id = get_short_id(os.path.splitext(file)[0])
                                     
-                                    # Create the new file name
                                     new_script_name = f"{item_id}_script_{scripts_processed + 1}.txt"
                                     new_script_path = os.path.join(self.output_directory, new_script_name)
                                     
-                                    # Copy the file
                                     shutil.copy2(script_path, new_script_path)
                                     self.log(f"Copied script for {folder[:-1]} {item_id} to {new_script_path}", color=Fore.GREEN)
                                     scripts_processed += 1
@@ -228,14 +216,11 @@ class CeligoAutomation:
         self.log(f"Script processing completed. Processed {scripts_processed} scripts.", color=Fore.GREEN)
         self.log(f"Scripts saved in: {self.output_directory}", color=Fore.GREEN)
     def add_image_to_document(doc, image_path, caption):
-        # Add the image
         doc.add_picture(image_path, width=Inches(6))
         
-        # Add a paragraph for the image and center it
         last_paragraph = doc.paragraphs[-1]
         last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         
-        # Add the caption as a separate paragraph
         caption_paragraph = doc.add_paragraph(caption)
         caption_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
         caption_paragraph.style = doc.styles['Caption']
@@ -245,7 +230,6 @@ class CeligoAutomation:
         
         doc = Document()
         
-        # Define styles
         styles = doc.styles
         style_heading1 = styles.add_style('Custom Heading 1', WD_STYLE_TYPE.PARAGRAPH)
         style_heading1.font.name = 'Calibri'
@@ -275,7 +259,6 @@ class CeligoAutomation:
         style_code.font.size = Pt(10)
         style_code.font.color.rgb = RGBColor(0, 102, 0)  # Dark green
         
-        # Add title
         title = doc.add_heading('LYSI', level=0)
         title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
@@ -299,7 +282,6 @@ class CeligoAutomation:
                     'id': flow_id,
                 })
 
-            # Then add exports and imports
             for image in images:
                 full_id = image.split('_', 1)[1].split('.')[0]
                 short_id_10 = full_id[-10:]
@@ -397,33 +379,27 @@ class CeligoAutomation:
 
         matched_files = find_matching_files(self.output_directory)
 
-        # Process flows first
         flow_files = [f for f in matched_files if f['type'] == 'flow']
         for flow in flow_files:
             try:
                 image_file = flow['image']
                 item_id = flow['id']
 
-                # Get title from JSON
                 title = get_title_from_json('flow', item_id)
 
-                # Add title
                 doc.add_heading(f"Flow: {title}", level=1)
 
-                # Add image
                 image_path = os.path.join(self.output_directory, image_file)
                 doc.add_picture(image_path, width=Inches(6))
                 last_paragraph = doc.paragraphs[-1]
                 last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 self.log(f"Added flow image: {image_file}", color=Fore.GREEN)
 
-                # Add a page break after each flow
                 doc.add_page_break()
 
             except Exception as e:
                 self.log(f"Error processing flow {flow['image']}: {str(e)}", level="ERROR", color=Fore.RED)
 
-        # Process exports and imports
         for match in [f for f in matched_files if f['type'] != 'flow']:
             try:
                 item_type = match['type']
@@ -431,20 +407,16 @@ class CeligoAutomation:
                 item_id_10 = match['id_10']
                 item_id_24 = match['id_24']
 
-                # Get title from JSON using 24-character ID
                 title = get_title_from_json(item_type, item_id_24)
 
-                # Add title
                 doc.add_heading(f"{item_type.capitalize()}: {title}", level=1)
 
-                # Add image
                 image_path = os.path.join(self.output_directory, image_file)
                 doc.add_picture(image_path, width=Inches(6))
                 last_paragraph = doc.paragraphs[-1]
                 last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 self.log(f"Added {item_type} image: {image_file}", color=Fore.GREEN)
 
-                # Add description if exists (using 10-character ID)
                 if 'description' in match and match['description']:
                     description_file = match['description']
                     description_path = os.path.join(self.output_directory, description_file)
@@ -456,7 +428,6 @@ class CeligoAutomation:
                     doc.add_paragraph("No description available for this item.", style='Custom Normal')
                     self.log(f"No description file found for {image_file}", level="WARNING", color=Fore.YELLOW)
 
-                # Add script if exists (using 10-character ID)
                 if 'script' in match and match['script']:
                     script_file = match['script']
                     script_path = os.path.join(self.output_directory, script_file)
@@ -467,20 +438,17 @@ class CeligoAutomation:
                     p.add_run(script_content)
                     self.log(f"Added script for {image_file}", color=Fore.GREEN)
 
-                # Add a page break after each export/import
                 doc.add_page_break()
 
             except Exception as e:
                 self.log(f"Error processing {match['image']}: {str(e)}", level="ERROR", color=Fore.RED)
 
-        # Add footer
         section = doc.sections[-1]
         footer = section.footer
         footer_para = footer.paragraphs[0]
         footer_para.text = "LYSI Consulting"
         footer_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-        # Save the document
         doc_path = os.path.join(self.output_directory, f"{doc_name}.docx")
         doc.save(doc_path)
         self.log(f"Documentation generated and saved to: {doc_path}", color=Fore.GREEN)
@@ -872,7 +840,6 @@ class CeligoAutomation:
 
     def take_full_element_screenshot(self, element, output_path):
         try:
-            # Function to capture screenshot
             def capture_screenshot():
                 png = self.driver.get_screenshot_as_png()
                 im = Image.open(io.BytesIO(png))
@@ -903,33 +870,26 @@ class CeligoAutomation:
                 )
                 return im.crop((left, top, right, bottom))
 
-            # Take first screenshot with all sections expanded
             expanded_screenshot = capture_screenshot()
 
-            # Find the first expandable section
             expandable_sections = self.driver.find_elements(
                 By.CSS_SELECTOR,
                 "div.MuiButtonBase-root.MuiAccordionSummary-root.Mui-expanded.MuiAccordionSummary-gutters",
             )
             
             if expandable_sections:
-                # Click to collapse only the first section
                 self.driver.execute_script("arguments[0].click();", expandable_sections[0])
                 time.sleep(1)  # Wait for collapse animation
 
-                # Take second screenshot with first section collapsed
                 collapsed_screenshot = capture_screenshot()
 
-                # Merge the two screenshots
                 total_height = expanded_screenshot.height + collapsed_screenshot.height
                 merged_image = Image.new("RGB", (expanded_screenshot.width, total_height))
                 merged_image.paste(expanded_screenshot, (0, 0))
                 merged_image.paste(collapsed_screenshot, (0, expanded_screenshot.height))
 
-                # Save the merged image
                 merged_image.save(output_path)
             else:
-                # If no expandable sections found, just save the expanded screenshot
                 expanded_screenshot.save(output_path)
 
             self.log(f"Screenshot saved: {output_path}", color=Fore.GREEN)
@@ -1092,18 +1052,15 @@ class CeligoAutomation:
     def clean_all_generated_files(self):
         self.log("Cleaning all generated files...", color=Fore.CYAN)
         try:
-            # Remove the extracted directory
             extracted_dir = os.path.join(self.celigo_ai_dir, "extracted")
             if os.path.exists(extracted_dir):
                 shutil.rmtree(extracted_dir)
                 self.log(f"Removed extracted directory: {extracted_dir}", color=Fore.GREEN)
 
-            # Remove the output directory
             if os.path.exists(self.output_directory):
                 shutil.rmtree(self.output_directory)
                 self.log(f"Removed output directory: {self.output_directory}", color=Fore.GREEN)
 
-            # Remove any generated .docx files in the CeligoAI directory
             for file in os.listdir(self.celigo_ai_dir):
                 if file.endswith(".docx"):
                     os.remove(os.path.join(self.celigo_ai_dir, file))
